@@ -1528,10 +1528,14 @@
 
   // The whitelist contract lives on Ethereum Mainnet, separate from the
   // Sepolia-only PixelData/Gallery contracts — needs its own RPC list.
+  // Primary: Alchemy (private, reliable). Fallbacks: public RPCs in case the Alchemy key is ever rate-limited/invalid.
   const MAINNET_PUBLIC_RPCS = [
+    "https://eth-mainnet.g.alchemy.com/v2/alch_8Gna-e3OLaOtxpmkqKI4J",
+    "https://eth.drpc.org",
+    "https://1rpc.io/eth",
     "https://ethereum-rpc.publicnode.com",
-    "https://eth.llamarpc.com",
-    "https://rpc.ankr.com/eth"
+    "https://rpc.ankr.com/eth",
+    "https://cloudflare-eth.com"
   ];
   async function getWorkingMainnetProvider() {
     for (const url of MAINNET_PUBLIC_RPCS) {
