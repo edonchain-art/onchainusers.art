@@ -3131,25 +3131,49 @@
   const PIXEL_GAS_WALL_IMG = "data:image/png;base64,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";
 
   // ---------- Character selection: 2 male, 2 female random picks ----------
-  async function getCharacterOptions() {
-    await ensureGalleryInfo();
-    await ensureFullTraitData();
+  // Characters are the final contract's Sepolia test tokens (the same ones as
+  // the Overview showcase). Gender is its own trait in the final metadata, so
+  // it's read for all test tokens in two batched calls, without images:
+  // tokenId -> composite index (token), then composite index -> attributes (renderer).
+  let showcaseGenders = null; // tokenId -> "Male" | "Female" | "Genderless" | ""
+  async function loadShowcaseGenders() {
+    if (showcaseGenders) return showcaseGenders;
+    await ensureShowcaseContract();
+    const runner = showcaseContract.runner;
+    const tokenIface = new ethers.Interface([
+      "function getCompositeIndex(uint256 tokenId) view returns (uint256)",
+      "function renderer() view returns (address)"
+    ]);
+    const rendererIface = new ethers.Interface(["function attributesJson(uint256 compositeIndex) view returns (string)"]);
+    const rendererAddress = await new ethers.Contract(SHOWCASE_CONTRACT, tokenIface, runner).renderer();
+    const multicall = new ethers.Contract(MULTICALL3_ADDRESS, MULTICALL3_ABI, runner);
+    const ids = Array.from({ length: showcaseTotal }, (_, i) => i + 1);
 
-    if (!galleryTotal) return [];
+    const indexResults = await multicall.aggregate3.staticCall(ids.map(id => ({
+      target: SHOWCASE_CONTRACT, allowFailure: true,
+      callData: tokenIface.encodeFunctionData("getCompositeIndex", [id])
+    })));
+    const indexes = indexResults.map(r => r.success ? tokenIface.decodeFunctionResult("getCompositeIndex", r.returnData)[0] : null);
 
-    const allIds = Object.keys(fullAttributesById).map(Number);
-    const maleIds = [];
-    const femaleIds = [];
-
-    allIds.forEach(id => {
-      const attrs = fullAttributesById[id] || [];
-      const typeAttr = attrs.find(a => a.trait_type.trim().toLowerCase() === "type");
-      if (!typeAttr) return;
-      const val = typeAttr.value.toLowerCase();
-      if (val.includes("female")) femaleIds.push(id);
-      else if (val.includes("male")) maleIds.push(id);
+    const attrResults = await multicall.aggregate3.staticCall(indexes.map(ix => ({
+      target: rendererAddress, allowFailure: true,
+      callData: rendererIface.encodeFunctionData("attributesJson", [ix ?? 0n])
+    })));
+    showcaseGenders = {};
+    ids.forEach((id, k) => {
+      let gender = "";
+      if (indexes[k] !== null && attrResults[k].success) {
+        try {
+          const attrs = JSON.parse(rendererIface.decodeFunctionResult("attributesJson", attrResults[k].returnData)[0]);
+          gender = (attrs.find(a => a.trait_type === "Gender") || {}).value || "";
+        } catch (e) { /* leave unknown */ }
+      }
+      showcaseGenders[id] = gender;
     });
+    return showcaseGenders;
+  }
 
+  async function getCharacterOptions() {
     function sampleTwo(arr) {
       const copy = arr.slice();
       const picked = [];
@@ -3160,21 +3184,25 @@
       return picked;
     }
 
-    const chosenIds = [...sampleTwo(maleIds), ...sampleTwo(femaleIds)];
-    if (chosenIds.length === 0) {
-      // Fallback: no Type trait data available, just grab 4 random pieces
-      const fallback = [];
-      for (let i = 0; i < 4 && i < galleryTotal; i++) fallback.push(Math.floor(Math.random() * galleryTotal));
-      chosenIds.push(...fallback);
+    let chosen = [];
+    try {
+      const genders = await loadShowcaseGenders();
+      const ids = Object.keys(genders).map(Number);
+      chosen = [
+        ...sampleTwo(ids.filter(id => genders[id] === "Male")).map(id => ({ id, label: "Male" })),
+        ...sampleTwo(ids.filter(id => genders[id] === "Female")).map(id => ({ id, label: "Female" }))
+      ];
+    } catch (e) {
+      console.error("Couldn't read genders, picking any 4 characters:", e);
+    }
+    if (chosen.length === 0) {
+      try { await ensureShowcaseContract(); } catch (e) { return []; }
+      chosen = pickShowcaseIds(4, []).map(id => ({ id, label: "" }));
     }
 
-    const pieces = await Promise.all(chosenIds.map(async id => {
+    const pieces = await Promise.all(chosen.map(async ({ id, label }) => {
       try {
-        const svg = await contract.tokenImageSvg(id);
-        const image = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svg)));
-        const attrs = fullAttributesById[id] || [];
-        const typeAttr = attrs.find(a => a.trait_type.trim().toLowerCase() === "type");
-        const label = typeAttr ? (typeAttr.value.toLowerCase().includes("female") ? "Female" : "Male") : "";
+        const { image } = await fetchOverviewPiece(id);
         return { id, image, label };
       } catch (e) {
         return null;
