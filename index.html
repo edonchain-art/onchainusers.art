@@ -3,6 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://ethereum-rpc.publicnode.com https://ethereum-sepolia-rpc.publicnode.com https://eth-mainnet.g.alchemy.com https://eth.drpc.org https://1rpc.io https://rpc.ankr.com https://cloudflare-eth.com https://rpc.sepolia.org; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<script>
+  // Never run inside another site's frame (protects wallet actions from clickjacking).
+  if (window.top !== window.self) {
+    document.documentElement.style.display = "none";
+    try { window.top.location = window.self.location.href; } catch (e) {}
+  }
+</script>
 <title>Onchain Users — Fully Onchain on Ethereum</title>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -584,6 +593,9 @@
   .whitelist-page{
     padding:90px 48px 100px;
     max-width:640px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
   }
   .gallery-soon{ max-width:640px; padding:34px 0 20px; }
   .gallery-soon .eyebrow{ margin-bottom:22px; }
@@ -1215,7 +1227,7 @@
       <div class="profile-owned">
         <h2 class="pixel">Your Onchain Users</h2>
         <div style="background:var(--panel); border:1px solid var(--accent); border-radius:8px; padding:14px 16px; margin-bottom:20px; font-size:13px; color:var(--muted); line-height:1.6;">
-          <strong style="color:var(--text);">⚠ Preview pool.</strong> Ownership lookups aren't connected yet. Once the real collection mints, this page will show your actual holdings.
+          <strong style="color:var(--text);">Coming at mint.</strong> Once the collection is minted on Ethereum, this page will show the Onchain Users your wallet holds.
         </div>
         <div id="profileStatus">Connect your wallet to see which Onchain Users you own.</div>
         <div class="grid" id="profileGrid"></div>
@@ -1635,7 +1647,7 @@
       <div class="eyebrow">04 · Whitelist</div>
       <h1 class="pixel">Submit Your<br>Wallet</h1>
       <div style="background:var(--panel); border:1px solid var(--accent); border-radius:8px; padding:12px 16px; margin-bottom:20px; font-size:12px; color:var(--muted); line-height:1.6;">
-        <strong style="color:var(--text);">⚠ This page uses real Ethereum Mainnet.</strong> Unlike the rest of this site (Gallery, art previews), submitting your wallet here is a real transaction with real gas — not testnet.
+        <strong style="color:var(--text);">⚠ Real Ethereum Mainnet.</strong> Submitting your wallet is a real transaction and costs a small amount of gas. Your submission is public onchain.
       </div>
       <p class="lead">Connect your wallet, complete the tasks below, and submit for consideration — fully onchain, no forms, no spreadsheets. This puts you in the pool. Every submitted wallet gets scored using A4F, and wallets that score well will be added to the actual mint whitelist. Approved wallets will be revealed during mint week.</p>
 
@@ -1741,7 +1753,7 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js" integrity="sha384-6Zl0Pc8zjSz8KvmNeXRvUQgY4ryFb+BwDvKCmLYcBME0joAaru491tQgi9B7zsMM" crossorigin="anonymous"></script>
 <script>
   // ---------- Theme toggle (in-memory only, no storage) ----------
   const SUN_ICON = '<path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0-14a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V4a1 1 0 0 1 1-1zm0 17a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1zM4.22 4.22a1 1 0 0 1 1.42 0l.7.7a1 1 0 1 1-1.41 1.42l-.71-.71a1 1 0 0 1 0-1.41zm12.73 12.73a1 1 0 0 1 1.41 0l.71.71a1 1 0 1 1-1.42 1.41l-.7-.7a1 1 0 0 1 0-1.42zM1 12a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2H2a1 1 0 0 1-1-1zm18 0a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2h-1a1 1 0 0 1-1-1zM4.22 19.78a1 1 0 0 1 0-1.41l.71-.71a1 1 0 1 1 1.41 1.42l-.7.7a1 1 0 0 1-1.42 0zM16.95 6.34a1 1 0 0 1 0-1.41l.7-.71a1 1 0 1 1 1.42 1.41l-.71.71a1 1 0 0 1-1.41 0z"/>';
@@ -2984,7 +2996,9 @@
         link.className = "wallet-picker-item";
         link.href = href;
         link.rel = "noopener";
-        link.innerHTML = `<span>${name}</span>`;
+        const label = document.createElement("span");
+        label.textContent = name;
+        link.appendChild(label);
         menu.appendChild(link);
       });
     }
@@ -2993,7 +3007,15 @@
       const item = document.createElement("button");
       item.className = "wallet-picker-item";
       item.type = "button";
-      item.innerHTML = `${info.icon ? `<img src="${info.icon}" alt="">` : ""}<span>${info.name || "Wallet"}</span>`;
+      if (typeof info.icon === "string" && info.icon.startsWith("data:image/")) {
+        const icon = document.createElement("img");
+        icon.src = info.icon;
+        icon.alt = "";
+        item.appendChild(icon);
+      }
+      const label = document.createElement("span");
+      label.textContent = String(info.name || "Wallet");
+      item.appendChild(label);
       item.addEventListener("click", async () => {
         closeWalletPicker();
         await connectAndVerify(provider);
@@ -3083,11 +3105,23 @@
     const statusEl = document.getElementById("wlStatus");
     if (!walletSigner) { statusEl.className = "wl-status err"; statusEl.textContent = "Connect your wallet first."; return; }
     try {
-      const network = await walletSigner.provider.getNetwork();
+      let network = await walletSigner.provider.getNetwork();
       if (network.chainId !== WHITELIST_CHAIN_ID) {
-        statusEl.className = "wl-status err";
-        statusEl.textContent = "Your wallet is on the wrong network — please switch to Ethereum Mainnet in your wallet and try again.";
-        return;
+        statusEl.className = "wl-status pending";
+        statusEl.textContent = "Switching your wallet to Ethereum Mainnet…";
+        try {
+          await activeProvider.request({ method: "wallet_switchEthereumChain", params: [{ chainId: "0x1" }] });
+          const browserProvider = new ethers.BrowserProvider(activeProvider);
+          walletSigner = await browserProvider.getSigner(connectedAddress);
+          network = await browserProvider.getNetwork();
+        } catch (e) {
+          console.warn("Network switch declined or unsupported:", e);
+        }
+        if (network.chainId !== WHITELIST_CHAIN_ID) {
+          statusEl.className = "wl-status err";
+          statusEl.textContent = "Your wallet is on the wrong network. Switch to Ethereum Mainnet in your wallet and try again.";
+          return;
+        }
       }
 
       statusEl.className = "wl-status pending";
@@ -3101,7 +3135,17 @@
       loadWhitelistStats();
     } catch (err) {
       statusEl.className = "wl-status err";
-      statusEl.textContent = err.shortMessage || err.message || String(err);
+      const code = err && (err.code ?? err.info?.error?.code);
+      if (code === "ACTION_REJECTED" || code === 4001) {
+        statusEl.textContent = "Transaction cancelled in your wallet.";
+      } else if (code === "INSUFFICIENT_FUNDS") {
+        statusEl.textContent = "Not enough ETH in this wallet to pay the gas.";
+      } else if (/already|submitted/i.test(err.reason || err.shortMessage || "")) {
+        statusEl.textContent = "This wallet has already been submitted.";
+      } else {
+        console.error(err);
+        statusEl.textContent = "The transaction didn't go through. Please try again.";
+      }
     }
   });
 
@@ -3526,6 +3570,8 @@
   function startShowcaseRotation() {
     if (showcaseFlipTimer) clearInterval(showcaseFlipTimer);
 
+    // No automatic flipping for visitors who prefer reduced motion.
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     showcaseFlipTimer = setInterval(async () => {
       // Only do work while Overview is actually the visible tab
       const overviewEl = document.getElementById("view-overview");
