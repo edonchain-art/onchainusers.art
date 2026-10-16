@@ -543,6 +543,14 @@
     padding:90px 48px 100px;
     max-width:640px;
   }
+  .gallery-soon{ max-width:640px; padding:34px 0 20px; }
+  .gallery-soon .eyebrow{ margin-bottom:22px; }
+  .gallery-soon h1.pixel{ font-size:clamp(26px, 4.5vw, 40px); margin:0 0 18px; }
+  .gallery-soon p{ color:var(--muted); font-size:15px; line-height:1.8; margin:0 0 18px; }
+  .gallery-soon .btn-secondary{ margin-top:12px; }
+  /* Mobile: no wallet in this browser — open the site inside a wallet app */
+  .wallet-picker-note{ padding:10px 12px 6px; font-family:var(--font-ui); font-size:11px; line-height:1.6; color:var(--muted); max-width:260px; }
+  a.wallet-picker-item{ text-decoration:none; color:var(--text); min-height:44px; }
   .whitelist-page .eyebrow{ margin-bottom:22px; }
   .whitelist-page h1.pixel{ font-size:clamp(26px, 4.5vw, 40px); margin:0 0 18px; }
   .whitelist-page p.lead{
@@ -1128,7 +1136,7 @@
     <button data-view="whitelist"><span class="navnum">04</span>Whitelist</button>
   </div>
   <div class="sitenav-footer">
-    <a href="https://sepolia.etherscan.io/address/0x1d1Ee3E1E3c2e41CceC5795AdE2069f2A6A7e176" target="_blank" rel="noopener">View Contract ↗</a>
+    <a href="https://sepolia.etherscan.io/address/0x3ae7c689490a0b2bf54d8e60c29e5ce569efb672" target="_blank" rel="noopener">View Contract ↗</a>
     <div class="social-row">
       <a href="https://x.com/onchainUsers" target="_blank" rel="noopener" aria-label="X">
         <svg viewBox="0 0 24 24"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-7.1l-5.5-7.2L4.4 22H1.3l8.1-9.3L1 2h7.3l5 6.6L18.9 2zm-1.2 18h1.9L7.4 3.9H5.4L17.7 20z"/></svg>
@@ -1181,7 +1189,7 @@
       <div class="hero-actions">
         <button class="btn-primary" disabled title="Mint date TBD">Mint on Ethereum</button>
         <button class="btn-secondary" onclick="switchView('gallery')">View Gallery</button>
-        <a href="https://sepolia.etherscan.io/address/0x1d1Ee3E1E3c2e41CceC5795AdE2069f2A6A7e176" target="_blank" rel="noopener" class="btn-secondary">View Test Contract</a>
+        <a href="https://sepolia.etherscan.io/address/0x3ae7c689490a0b2bf54d8e60c29e5ce569efb672" target="_blank" rel="noopener" class="btn-secondary">View Test Contract</a>
       </div>
 
       <div class="stats" style="max-width:860px;">
@@ -1222,6 +1230,17 @@
 
   <section class="view" id="view-gallery">
     <div class="gallery-page">
+      <div class="gallery-soon">
+        <div class="eyebrow">02 · Gallery</div>
+        <h1 class="pixel">Gallery opens<br>at mint.</h1>
+        <p>The full gallery of all 2,369 Onchain Users will be available here once the collection is minted on Ethereum, read straight from the final contract.</p>
+        <p>Until then, every character stays a surprise: each mint draws a random User.</p>
+        <button class="btn-secondary" type="button" onclick="switchView('whitelist')">Join the Whitelist</button>
+      </div>
+      <!-- The pre-mint preview gallery (old Sepolia test contract) is disabled
+           until mint. Kept hidden so the rest of the page's scripts still find
+           its elements; switch it back on by setting GALLERY_ENABLED = true. -->
+      <div id="galleryLegacy" hidden>
       <div class="gallery-head">
         <h2 class="pixel">Gallery</h2>
         <div class="gallery-controls">
@@ -1255,6 +1274,7 @@
             <button class="btn-secondary" id="loadAllBtn" style="display:none;">Load Entire Collection</button>
           </div>
         </div>
+      </div>
       </div>
     </div>
   </section>
@@ -1499,11 +1519,13 @@
     document.getElementById("view-" + name).classList.add("active");
     document.querySelectorAll(".navlist button").forEach(b => b.classList.remove("active"));
     document.querySelector(`.navlist button[data-view="${name}"]`).classList.add("active");
-    if (name === "gallery" && !galleryLoadStarted) {
+    if (name === "gallery" && GALLERY_ENABLED && !galleryLoadStarted) {
       galleryLoadStarted = true;
       loadGallery();
     }
   }
+  // The gallery opens once the collection is minted (it would read the final contract).
+  const GALLERY_ENABLED = false;
   document.querySelectorAll(".navlist button").forEach(btn => {
     btn.addEventListener("click", () => switchView(btn.dataset.view));
   });
@@ -2532,30 +2554,88 @@
     return [];
   }
 
+  // Phones and tablets: regular mobile browsers (Safari, Chrome) have no
+  // wallet built in, so connecting means opening this page inside a wallet app.
+  const IS_MOBILE = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+  // Links that open the current page inside each wallet's built-in browser.
+  function mobileWalletLinks() {
+    const url = location.href.split("#")[0];
+    const noProtocol = url.replace(/^https?:\/\//, "");
+    const enc = encodeURIComponent(url);
+    return [
+      { name: "MetaMask", href: "https://metamask.app.link/dapp/" + noProtocol },
+      { name: "Coinbase Wallet", href: "https://go.cb-w.com/dapp?cb_url=" + enc },
+      { name: "Trust Wallet", href: "https://link.trustwallet.com/open_url?coin_id=60&url=" + enc },
+      { name: "Phantom", href: "https://phantom.app/ul/browse/" + enc + "?ref=" + encodeURIComponent(location.origin) },
+    ];
+  }
+
+  // Sign-In with Ethereum (EIP-4361) style message: a free signature (no
+  // transaction, no gas) that proves the connected wallet belongs to the user.
+  function buildSignInMessage(address, chainId) {
+    const nonce = Array.from(crypto.getRandomValues(new Uint8Array(8)), b => b.toString(16).padStart(2, "0")).join("");
+    return `${location.host} wants you to sign in with your Ethereum account:\n${address}\n\n` +
+      `Sign to confirm this wallet belongs to you. This is free: it does not send a transaction or cost gas.\n\n` +
+      `URI: ${location.origin}\nVersion: 1\nChain ID: ${chainId}\nNonce: ${nonce}\nIssued At: ${new Date().toISOString()}`;
+  }
+
   async function connectWithProvider(provider) {
     // Force the wallet's account picker to show every time, instead of
     // silently returning whichever account was approved last time. Not
     // every wallet supports wallet_requestPermissions — fall back to plain
-    // eth_requestAccounts if it's unavailable or rejected.
-    try {
-      await provider.request({
-        method: "wallet_requestPermissions",
-        params: [{ eth_accounts: {} }]
-      });
-    } catch (e) {
-      console.warn("wallet_requestPermissions not supported/declined, falling back:", e);
+    // eth_requestAccounts if it's unavailable or rejected. Skipped inside
+    // mobile wallet apps, where some wallets never answer it and the
+    // connection would hang.
+    if (!IS_MOBILE) {
+      try {
+        await provider.request({
+          method: "wallet_requestPermissions",
+          params: [{ eth_accounts: {} }]
+        });
+      } catch (e) {
+        console.warn("wallet_requestPermissions not supported/declined, falling back:", e);
+      }
     }
 
     const accounts = await provider.request({ method: "eth_requestAccounts" });
-    connectedAddress = accounts[0];
-    activeProvider = provider;
     const browserProvider = new ethers.BrowserProvider(provider);
-    walletSigner = await browserProvider.getSigner();
+    const signer = await browserProvider.getSigner(accounts[0]);
+    const address = await signer.getAddress();
+
+    // Ask the user to sign; only a valid signature from this exact address counts.
+    const { chainId } = await browserProvider.getNetwork();
+    const message = buildSignInMessage(address, chainId.toString());
+    let signature;
+    try {
+      signature = await signer.signMessage(message);
+    } catch (e) {
+      throw new Error("Signature declined — sign the message to confirm this wallet is yours.");
+    }
+    if (ethers.verifyMessage(message, signature).toLowerCase() !== address.toLowerCase()) {
+      throw new Error("The signature doesn't match this wallet. Please try again.");
+    }
+
+    connectedAddress = address;
+    activeProvider = provider;
+    walletSigner = signer;
+
+    // Switching accounts in the wallet ends the verified session.
+    if (provider.on && !provider.__ouWatching) {
+      provider.__ouWatching = true;
+      provider.on("accountsChanged", (accs) => {
+        if (activeProvider === provider && (!accs.length || accs[0].toLowerCase() !== connectedAddress?.toLowerCase())) {
+          disconnectWallet();
+        }
+      });
+    }
 
     const short = connectedAddress.slice(0, 6) + "…" + connectedAddress.slice(-4);
 
     const walletNameEl = document.getElementById("walletName");
-    if (walletNameEl) walletNameEl.textContent = short;
+    if (walletNameEl) walletNameEl.textContent = short + " ✓";
+    if (walletNameEl) walletNameEl.title = "Wallet verified by signature";
     const profileBtn = document.getElementById("profileConnectBtn");
     if (profileBtn) { profileBtn.style.display = "none"; }
     const profileDisconnectBtn = document.getElementById("profileDisconnectBtn");
@@ -2565,7 +2645,7 @@
     }
 
     const wlWalletDisplay = document.getElementById("wlWalletDisplay");
-    if (wlWalletDisplay) wlWalletDisplay.textContent = "Connected: " + short;
+    if (wlWalletDisplay) wlWalletDisplay.textContent = "Verified: " + short + " ✓";
     const wlConnectBtn = document.getElementById("wlConnectBtn");
     if (wlConnectBtn) { wlConnectBtn.style.display = "none"; }
     const wlDisconnectBtn = document.getElementById("wlDisconnectBtn");
@@ -2610,17 +2690,32 @@
     document.querySelectorAll(".wallet-picker-menu").forEach(el => el.remove());
   }
 
+  // Connect, sign, and tell the user if anything went wrong (the button
+  // goes back to "Connect Wallet" so they can try again).
+  async function connectAndVerify(provider) {
+    try {
+      await connectWithProvider(provider);
+    } catch (err) {
+      console.error(err);
+      const code = err && (err.code ?? err.info?.error?.code);
+      const msg = code === 4001 || code === "ACTION_REJECTED"
+        ? "Connection cancelled in the wallet."
+        : (err && err.message) || "Couldn't connect the wallet. Please try again.";
+      alert(msg);
+    }
+  }
+
   function openWalletPicker(anchorBtn) {
     closeWalletPicker();
     const providers = getAvailableProviders();
 
-    if (providers.length === 0) {
+    if (providers.length === 0 && !IS_MOBILE) {
       alert("No wallet found. Install MetaMask, Rabby, Phantom, or another Ethereum wallet to connect.");
       return;
     }
 
     if (providers.length === 1) {
-      connectWithProvider(providers[0].provider).catch(err => console.error(err));
+      connectAndVerify(providers[0].provider);
       return;
     }
 
@@ -2629,6 +2724,23 @@
     const menu = document.createElement("div");
     menu.className = "wallet-picker-menu";
 
+    if (providers.length === 0) {
+      // Mobile browser without a wallet: open this page inside a wallet app,
+      // where its built-in browser can connect and sign.
+      const note = document.createElement("div");
+      note.className = "wallet-picker-note";
+      note.textContent = "Open this page in your wallet app to connect:";
+      menu.appendChild(note);
+      mobileWalletLinks().forEach(({ name, href }) => {
+        const link = document.createElement("a");
+        link.className = "wallet-picker-item";
+        link.href = href;
+        link.rel = "noopener";
+        link.innerHTML = `<span>${name}</span>`;
+        menu.appendChild(link);
+      });
+    }
+
     providers.forEach(({ info, provider }) => {
       const item = document.createElement("button");
       item.className = "wallet-picker-item";
@@ -2636,7 +2748,7 @@
       item.innerHTML = `${info.icon ? `<img src="${info.icon}" alt="">` : ""}<span>${info.name || "Wallet"}</span>`;
       item.addEventListener("click", async () => {
         closeWalletPicker();
-        try { await connectWithProvider(provider); } catch (err) { console.error(err); }
+        await connectAndVerify(provider);
       });
       menu.appendChild(item);
     });
