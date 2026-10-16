@@ -333,6 +333,7 @@
     background:var(--panel);
   }
   .stat:last-child{ border-right:none; }
+  .eth-icon{ height:0.9em; width:auto; vertical-align:-0.08em; margin-left:0.18em; }
   .stat .num{
     font-family:var(--font-ui);
     font-size:22px;
@@ -457,6 +458,7 @@
   .preview-grid img:hover{ transform:translateY(-3px); border-color:var(--accent); }
 
   .preview-card{ position:relative; perspective:600px; }
+  .preview-card a{ display:block; }
   .preview-card img{
     transition:transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     transform-style:preserve-3d;
@@ -475,6 +477,46 @@
     background:linear-gradient(90deg, var(--panel2) 0%, var(--border) 50%, var(--panel2) 100%);
     background-size:200% 100%;
     animation:shimmer 1.4s infinite;
+  }
+
+  /* ---- 05 · The Art (article) ---- */
+  .art-page{ padding:90px 48px 100px; max-width:760px; }
+  .art-page .eyebrow{ margin-bottom:22px; }
+  .art-page h1.pixel{ font-size:clamp(26px, 4.5vw, 40px); margin:0 0 30px; }
+  .art-page h2.pixel{ font-size:15px; letter-spacing:1px; text-transform:uppercase; color:var(--text); margin:60px 0 18px; }
+  .art-page p{ color:var(--muted); font-size:15px; line-height:2; margin:0 0 20px; }
+  .art-page p.emphasis{ color:var(--text); font-size:17px; font-weight:600; line-height:1.7; }
+  .art-page b, .art-page strong{ color:var(--text); }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 22px; }
+  .chips span{ font-family:var(--font-ui); font-size:12px; color:var(--text); background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:5px 9px; }
+  .chips-label{ font-family:var(--font-ui); font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin:18px 0 0; }
+  .type-list{ display:flex; flex-direction:column; gap:10px; margin:10px 0 8px; }
+  .type-row{ display:grid; grid-template-columns:72px 1fr auto; gap:16px; align-items:center; background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:10px 14px 10px 10px; }
+  .type-row img{ width:72px; height:72px; border-radius:8px; border:1px solid var(--border); background:var(--panel2); image-rendering:pixelated; }
+  .type-name{ font-family:var(--font-head); font-weight:700; font-size:16px; color:var(--text); }
+  .type-note{ font-size:13px; line-height:1.6; color:var(--muted); margin-top:3px; }
+  .type-count{ text-align:right; font-family:var(--font-ui); display:flex; flex-direction:column; gap:2px; }
+  .type-count b{ font-size:18px; }
+  .type-count span{ font-size:11px; color:var(--muted); }
+  .type-count em{ font-style:normal; font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--accent); }
+  .art-caption{ font-family:var(--font-ui); font-size:11px; color:var(--muted); margin:6px 0 0; }
+  .layer-table{ width:100%; border-collapse:collapse; margin:8px 0 10px; font-size:14px; }
+  .layer-table th{ font-family:var(--font-ui); font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--muted); text-align:left; padding:8px 10px; border-bottom:1px solid var(--border); }
+  .layer-table td{ padding:9px 10px; border-bottom:1px solid var(--border); color:var(--muted); }
+  .layer-table td:first-child{ color:var(--text); font-weight:600; }
+  .layer-table td:nth-child(2){ font-family:var(--font-ui); color:var(--text); text-align:right; width:60px; }
+  .palette-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(84px, 1fr)); gap:6px; margin:12px 0 8px; }
+  .swatch{ aspect-ratio:1; border-radius:6px; border:1px solid rgba(127,127,127,0.25); display:flex; align-items:flex-end; padding:6px; }
+  .swatch span{ font-family:var(--font-ui); font-size:10px; letter-spacing:0.5px; }
+  .art-stats{ display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:10px; margin:12px 0 10px; }
+  .art-stats div{ background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:14px; }
+  .art-stats b{ display:block; font-family:var(--font-ui); font-size:20px; color:var(--text); }
+  .art-stats span{ font-size:11px; letter-spacing:1px; text-transform:uppercase; color:var(--muted); }
+  @media (max-width: 760px){
+    .art-page{ padding-left:20px; padding-right:20px; }
+    .type-row{ grid-template-columns:56px 1fr auto; gap:12px; }
+    .type-row img{ width:56px; height:56px; }
+    .palette-grid{ grid-template-columns:repeat(auto-fill, minmax(70px, 1fr)); }
   }
 
   .manifesto-page{
@@ -1134,6 +1176,7 @@
     <button data-view="gallery"><span class="navnum">02</span>Gallery</button>
     <button data-view="manifesto"><span class="navnum">03</span>Manifesto</button>
     <button data-view="whitelist"><span class="navnum">04</span>Whitelist</button>
+    <button data-view="art"><span class="navnum">05</span>The Art</button>
   </div>
   <div class="sitenav-footer">
     <a href="https://sepolia.etherscan.io/address/0x3ae7c689490a0b2bf54d8e60c29e5ce569efb672" target="_blank" rel="noopener">View Contract ↗</a>
@@ -1194,9 +1237,9 @@
 
       <div class="stats" style="max-width:860px;">
         <div class="stat"><div class="num">Ethereum</div><div class="lbl">Mint Network</div></div>
-        <div class="stat"><div class="num" id="statSupply">3,969</div><div class="lbl">Supply</div></div>
-        <div class="stat"><div class="num" id="statMinted">—</div><div class="lbl">Minted</div></div>
-        <div class="stat"><div class="num" id="statMintPrice">TBD</div><div class="lbl">Mint Price</div></div>
+        <div class="stat"><div class="num" id="statSupply">2,369</div><div class="lbl">Supply</div></div>
+        <div class="stat"><div class="num" id="statMinted">TBD</div><div class="lbl">Minted</div></div>
+        <div class="stat"><div class="num" id="statMintPrice" style="white-space:nowrap;" aria-label="0.0015 ETH">0.0015<svg class="eth-icon" viewBox="0 0 10 16" aria-hidden="true"><path fill="currentColor" d="M5 0 0 8.1 5 11 10 8.1zM0 9.2 5 16l5-6.8L5 12.1z"/></svg></div><div class="lbl">Mint Price</div></div>
         <div class="stat"><div class="num">100%</div><div class="lbl">Onchain</div></div>
         <div class="stat"><div class="num">CC0</div><div class="lbl">License</div></div>
       </div>
@@ -1212,7 +1255,7 @@
 
     <div class="preview-strip">
       <h2 class="pixel">The Art</h2>
-      <p class="sub" id="previewSub">A hand drawn pixel art collection, each piece crafted on a 33×33 pixel canvas — fully onchain, pixel by pixel. Live pieces below are pulled from the trait pool for preview — final art will be shuffled and assigned on mint day.</p>
+      <p class="sub" id="previewSub">A hand drawn pixel art collection, each piece crafted on a 33×33 pixel canvas — fully onchain, pixel by pixel. The pieces below are live from the final contract's test run on Sepolia (50 test mints), some of them move. On mainnet, every mint draws a random User.</p>
       <div class="preview-grid" id="previewGrid"></div>
     </div>
 
@@ -1282,9 +1325,7 @@
   <section class="view" id="view-manifesto">
     <div class="manifesto-page">
       <div class="eyebrow">03 · Manifesto</div>
-      <h1 class="pixel">Why We're<br>Onchain.</h1>
-
-      <p class="emphasis">Onchain. Permanently.</p>
+      <h1 class="pixel">Onchain.<br>Permanently.</h1>
 
       <p>Onchain Users exists for the people who are already here.</p>
 
@@ -1378,6 +1419,217 @@
         <div class="caption">Not a phase. A lifestyle.</div>
       </div>
     </div>
+  </section>
+
+  <section class="view" id="view-art">
+    <article class="art-page">
+      <div class="eyebrow">05 · The Art</div>
+      <h1 class="pixel">2,369<br>Users.</h1>
+
+      <p class="emphasis">Every crypto user knows the faces.</p>
+      <p>The green-candle grin. The 3 a.m. stare at a chart that won't stop bleeding. The quiet panic of a seed phrase you can't find. The relief of a whitelist spot. Onchain Users started there: with the people, not the tokens.</p>
+      <p>The collection is a portrait of the users of the world computer: builders, traders, degens, collectors, researchers and believers. Each of the 2,369 Users is hand-drawn pixel art on a 33×33 canvas, and every one of them lives entirely on Ethereum.</p>
+
+      <h2 class="pixel">Faces &amp; Emotions</h2>
+      <p>At its heart, Onchain Users is a collection of expressions. There are <b>50 faces</b>, and each is a mood every crypto user has worn at some point: the Big Smile of a good mint, Heart Eyes for a new drop, Sweating through a volatile night, Coping after the dump, Drained and Dazed when it all goes sideways, and Laser Eyes when the conviction never left.</p>
+      <div class="chips">
+        <span>Big Smile</span><span>Heart Eyes</span><span>LOL</span><span>Frens</span><span>Vibing</span><span>Excited</span><span>Sweating</span><span>Coping</span><span>Drained</span><span>Dazed</span><span>Yikes</span><span>Furious</span><span>Lost Keys</span><span>Wen Airdrop</span><span>Whitelisted</span><span>Laser Eyes</span><span>Rugger</span><span>Exploiter</span><span>Asleep</span><span>Recording</span>
+      </div>
+      <p>A face says more than a trait list ever could. Put the same User in a different mood and it becomes a different person, which is why no two of the 2,369 Users feel the same.</p>
+
+      <h2 class="pixel">The Types</h2>
+      <p>Underneath the expressions, every User is one of eight Types. Most are Human, and the rest get rarer from there. Five Types are animated by their own nature: a Glitch glitches, a Bot scans, a Zombie shambles, a Skull rattles and an Alien glows.</p>
+      <div class="type-list">
+          <div class="type-row">
+            <img data-token="5" alt="Human example (Sepolia test token #5)">
+            <div class="type-info">
+              <div class="type-name">Human</div>
+              <div class="type-note">Four skin tones: Mocha, Vanilla, Caramel and Cinnamon.</div>
+            </div>
+            <div class="type-count"><b>1,705</b><span>72.0%</span><em>Still</em></div>
+          </div>
+          <div class="type-row">
+            <img data-token="2" alt="Glitch example (Sepolia test token #2)">
+            <div class="type-info">
+              <div class="type-name">Glitch</div>
+              <div class="type-note">Corrupted signal. The character tears and splits; the background holds.</div>
+            </div>
+            <div class="type-count"><b>186</b><span>7.9%</span><em>Glitches</em></div>
+          </div>
+          <div class="type-row">
+            <img data-token="37" alt="Skinless example (Sepolia test token #37)">
+            <div class="type-info">
+              <div class="type-name">Skinless</div>
+              <div class="type-note">Everything exposed, nothing hidden.</div>
+            </div>
+            <div class="type-count"><b>168</b><span>7.1%</span><em>Still</em></div>
+          </div>
+          <div class="type-row">
+            <img data-token="1" alt="Zombie example (Sepolia test token #1)">
+            <div class="type-info">
+              <div class="type-name">Zombie</div>
+              <div class="type-note">Still minting, still trading, long after they should have logged off.</div>
+            </div>
+            <div class="type-count"><b>132</b><span>5.6%</span><em>Shambles</em></div>
+          </div>
+          <div class="type-row">
+            <img data-token="4" alt="Bot example (Sepolia test token #4)">
+            <div class="type-info">
+              <div class="type-name">Bot</div>
+              <div class="type-note">A scan line runs over the metal, endlessly checking the chain.</div>
+            </div>
+            <div class="type-count"><b>112</b><span>4.7%</span><em>Scans</em></div>
+          </div>
+          <div class="type-row">
+            <img data-token="9" alt="Skull example (Sepolia test token #9)">
+            <div class="type-info">
+              <div class="type-name">Skull</div>
+              <div class="type-note">Bones that won't rest. Every few seconds they rattle.</div>
+            </div>
+            <div class="type-count"><b>33</b><span>1.4%</span><em>Rattles</em></div>
+          </div>
+          <div class="type-row">
+            <img data-token="7" alt="Ape example (Sepolia test token #7)">
+            <div class="type-info">
+              <div class="type-name">Ape</div>
+              <div class="type-note">A nod to where a lot of us started.</div>
+            </div>
+            <div class="type-count"><b>24</b><span>1.0%</span><em>Still</em></div>
+          </div>
+          <div class="type-row">
+            <img data-token="10" alt="Alien example (Sepolia test token #10)">
+            <div class="type-info">
+              <div class="type-name">Alien</div>
+              <div class="type-note">The rarest Users of all, with a soft green glow.</div>
+            </div>
+            <div class="type-count"><b>9</b><span>0.4%</span><em>Glows</em></div>
+          </div>
+      </div>
+      <p class="art-caption">Examples are live test tokens from the final contract on Sepolia. On mainnet, every mint draws a random User.</p>
+
+      <h2 class="pixel">The Traits</h2>
+      <p>Every User is built from layers stacked on top of each other, from the background up to the accessory in their hand. Across the collection there are <b>228 drawn traits</b>, plus a Gender trait and an Attribute Count in the metadata.</p>
+      <table class="layer-table">
+        <thead><tr><th>Layer</th><th>Traits</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Background</td><td>20</td><td>8 solid colors and 12 scenes, 5 of them animated</td></tr>
+          <tr><td>Type</td><td>11</td><td>8 kinds of User, Humans in 4 skin tones</td></tr>
+          <tr><td>Head</td><td>63</td><td>Hair, hats, hoods and helmets</td></tr>
+          <tr><td>Body</td><td>61</td><td>From hoodies to tuxedos</td></tr>
+          <tr><td>Face</td><td>50</td><td>The expressions: the heart of the collection</td></tr>
+          <tr><td>Accessory</td><td>12</td><td>What a User carries</td></tr>
+          <tr><td>Beard</td><td>7</td><td></td></tr>
+          <tr><td>Nose</td><td>3</td><td></td></tr>
+          <tr><td>Ears</td><td>1</td><td></td></tr>
+        </tbody>
+      </table>
+      <p>The rarest Users aren't just rare by chance. The collection was curated by hand: the Aliens, Apes and Skulls were placed one by one, the special backgrounds were balanced to exactly a quarter of the collection, and signature looks were given to each Type so they read as a family.</p>
+
+      <h2 class="pixel">Culture in the Details</h2>
+      <p>Look closely at the trait names and you'll find the whole culture: the wins, the losses, the jokes and the rituals.</p>
+      <div class="chips-label">Backgrounds</div>
+      <div class="chips"><span>Rekt Red</span><span>Gains Green</span><span>Vitalik Violet</span><span>Airdrop Pink</span><span>Ether Blue</span><span>To the Moon</span><span>Touching Grass</span><span>Blue Screen</span><span>No Signal Screen</span><span>Digital Code</span></div>
+      <div class="chips-label">Heads &amp; bodies</div>
+      <div class="chips"><span>Ether Hat</span><span>ZK Hat</span><span>Gas Cap</span><span>Tx Cap</span><span>Let Him Cook</span><span>Yield Farmer</span><span>BUIDLer Vest</span><span>Validator</span><span>Vitalik Tee</span></div>
+      <div class="chips-label">In their hands</div>
+      <div class="chips"><span>Diamond Hands</span><span>Seed Phrase Note</span><span>Hardware Wallet</span><span>Dropping Alpha</span><span>Phone - Green Candle</span><span>Miner Tool</span><span>Snapshot Tool</span><span>Popcorn</span></div>
+
+      <h2 class="pixel">The Palette</h2>
+      <p>The entire collection is painted with just <b>69 colors</b>. Every skin tone, every hoodie, every laser and every sunset comes from this one palette, the same bytes the contract uses to draw each User.</p>
+      <div class="palette-grid">
+          <div class="swatch" style="background:#000000;color:#f4f4f6"><span>#000000</span></div>
+          <div class="swatch" style="background:#202020;color:#f4f4f6"><span>#202020</span></div>
+          <div class="swatch" style="background:#404040;color:#f4f4f6"><span>#404040</span></div>
+          <div class="swatch" style="background:#606060;color:#f4f4f6"><span>#606060</span></div>
+          <div class="swatch" style="background:#808080;color:#0b0b10"><span>#808080</span></div>
+          <div class="swatch" style="background:#c0c0c0;color:#0b0b10"><span>#C0C0C0</span></div>
+          <div class="swatch" style="background:#e0e0e0;color:#0b0b10"><span>#E0E0E0</span></div>
+          <div class="swatch" style="background:#ffffff;color:#0b0b10"><span>#FFFFFF</span></div>
+          <div class="swatch" style="background:#402020;color:#f4f4f6"><span>#402020</span></div>
+          <div class="swatch" style="background:#602020;color:#f4f4f6"><span>#602020</span></div>
+          <div class="swatch" style="background:#802020;color:#f4f4f6"><span>#802020</span></div>
+          <div class="swatch" style="background:#804040;color:#f4f4f6"><span>#804040</span></div>
+          <div class="swatch" style="background:#c02040;color:#f4f4f6"><span>#C02040</span></div>
+          <div class="swatch" style="background:#c04020;color:#f4f4f6"><span>#C04020</span></div>
+          <div class="swatch" style="background:#c06040;color:#f4f4f6"><span>#C06040</span></div>
+          <div class="swatch" style="background:#c06060;color:#f4f4f6"><span>#C06060</span></div>
+          <div class="swatch" style="background:#e04040;color:#f4f4f6"><span>#E04040</span></div>
+          <div class="swatch" style="background:#c08080;color:#0b0b10"><span>#C08080</span></div>
+          <div class="swatch" style="background:#ff6060;color:#0b0b10"><span>#FF6060</span></div>
+          <div class="swatch" style="background:#ffe0e0;color:#0b0b10"><span>#FFE0E0</span></div>
+          <div class="swatch" style="background:#ff6000;color:#f4f4f6"><span>#FF6000</span></div>
+          <div class="swatch" style="background:#e08020;color:#0b0b10"><span>#E08020</span></div>
+          <div class="swatch" style="background:#ffa020;color:#0b0b10"><span>#FFA020</span></div>
+          <div class="swatch" style="background:#ffc020;color:#0b0b10"><span>#FFC020</span></div>
+          <div class="swatch" style="background:#e08040;color:#0b0b10"><span>#E08040</span></div>
+          <div class="swatch" style="background:#ffc040;color:#0b0b10"><span>#FFC040</span></div>
+          <div class="swatch" style="background:#e0a060;color:#0b0b10"><span>#E0A060</span></div>
+          <div class="swatch" style="background:#ffc0a0;color:#0b0b10"><span>#FFC0A0</span></div>
+          <div class="swatch" style="background:#ffe0c0;color:#0b0b10"><span>#FFE0C0</span></div>
+          <div class="swatch" style="background:#f9e6cf;color:#0b0b10"><span>#F9E6CF</span></div>
+          <div class="swatch" style="background:#ffe060;color:#0b0b10"><span>#FFE060</span></div>
+          <div class="swatch" style="background:#e0ff80;color:#0b0b10"><span>#E0FF80</span></div>
+          <div class="swatch" style="background:#a0e060;color:#0b0b10"><span>#A0E060</span></div>
+          <div class="swatch" style="background:#40a040;color:#0b0b10"><span>#40A040</span></div>
+          <div class="swatch" style="background:#60c040;color:#0b0b10"><span>#60C040</span></div>
+          <div class="swatch" style="background:#60a080;color:#0b0b10"><span>#60A080</span></div>
+          <div class="swatch" style="background:#206060;color:#f4f4f6"><span>#206060</span></div>
+          <div class="swatch" style="background:#608080;color:#f4f4f6"><span>#608080</span></div>
+          <div class="swatch" style="background:#00c0ff;color:#0b0b10"><span>#00C0FF</span></div>
+          <div class="swatch" style="background:#00ffff;color:#0b0b10"><span>#00FFFF</span></div>
+          <div class="swatch" style="background:#a0ffff;color:#0b0b10"><span>#A0FFFF</span></div>
+          <div class="swatch" style="background:#002040;color:#f4f4f6"><span>#002040</span></div>
+          <div class="swatch" style="background:#004060;color:#f4f4f6"><span>#004060</span></div>
+          <div class="swatch" style="background:#0060a0;color:#f4f4f6"><span>#0060A0</span></div>
+          <div class="swatch" style="background:#00a0e0;color:#0b0b10"><span>#00A0E0</span></div>
+          <div class="swatch" style="background:#6080a0;color:#f4f4f6"><span>#6080A0</span></div>
+          <div class="swatch" style="background:#202040;color:#f4f4f6"><span>#202040</span></div>
+          <div class="swatch" style="background:#0000a0;color:#f4f4f6"><span>#0000A0</span></div>
+          <div class="swatch" style="background:#404060;color:#f4f4f6"><span>#404060</span></div>
+          <div class="swatch" style="background:#4040a0;color:#f4f4f6"><span>#4040A0</span></div>
+          <div class="swatch" style="background:#6080e0;color:#0b0b10"><span>#6080E0</span></div>
+          <div class="swatch" style="background:#627eea;color:#0b0b10"><span>#627EEA</span></div>
+          <div class="swatch" style="background:#a0a0c0;color:#0b0b10"><span>#A0A0C0</span></div>
+          <div class="swatch" style="background:#c0c0e0;color:#0b0b10"><span>#C0C0E0</span></div>
+          <div class="swatch" style="background:#5e3399;color:#f4f4f6"><span>#5E3399</span></div>
+          <div class="swatch" style="background:#4000e0;color:#f4f4f6"><span>#4000E0</span></div>
+          <div class="swatch" style="background:#6040a0;color:#f4f4f6"><span>#6040A0</span></div>
+          <div class="swatch" style="background:#8000ff;color:#f4f4f6"><span>#8000FF</span></div>
+          <div class="swatch" style="background:#a060e0;color:#f4f4f6"><span>#A060E0</span></div>
+          <div class="swatch" style="background:#9b5de5;color:#f4f4f6"><span>#9B5DE5</span></div>
+          <div class="swatch" style="background:#402040;color:#f4f4f6"><span>#402040</span></div>
+          <div class="swatch" style="background:#602060;color:#f4f4f6"><span>#602060</span></div>
+          <div class="swatch" style="background:#c060c0;color:#f4f4f6"><span>#C060C0</span></div>
+          <div class="swatch" style="background:#e040ff;color:#f4f4f6"><span>#E040FF</span></div>
+          <div class="swatch" style="background:#ff80ff;color:#0b0b10"><span>#FF80FF</span></div>
+          <div class="swatch" style="background:#804060;color:#f4f4f6"><span>#804060</span></div>
+          <div class="swatch" style="background:#a04080;color:#f4f4f6"><span>#A04080</span></div>
+          <div class="swatch" style="background:#ff0040;color:#f4f4f6"><span>#FF0040</span></div>
+          <div class="swatch" style="background:#c06080;color:#f4f4f6"><span>#C06080</span></div>
+      </div>
+      <p class="art-caption">All 69 colors in the collection, with their hex codes.</p>
+
+      <h2 class="pixel">Some of Them Move</h2>
+      <p><b>649 of the 2,369 Users are animated</b>, and every animation is pure CSS stored inside the SVG the contract returns. No video, no GIF, no server. Glitches tear and recover while their background holds still, Bots run a scan over their metal, Zombies shamble, Skulls rattle and Aliens glow. Five of the backgrounds move too: Digital Code rains, Mist drifts, Clouds pass, No Signal Screen flickers and Blue Screen blinks its cursor.</p>
+
+      <h2 class="pixel">By the Numbers</h2>
+      <div class="art-stats">
+        <div><b>2,369</b><span>Users</span></div>
+        <div><b>33×33</b><span>Pixel canvas</span></div>
+        <div><b>69</b><span>Colors</span></div>
+        <div><b>228</b><span>Drawn traits</span></div>
+        <div><b>50</b><span>Faces</span></div>
+        <div><b>8</b><span>Types</span></div>
+        <div><b>649</b><span>Animated</span></div>
+        <div><b>100%</b><span>Onchain</span></div>
+        <div><b>CC0</b><span>License</span></div>
+      </div>
+
+      <h2 class="pixel">Built to Last</h2>
+      <p>There are no image files behind Onchain Users. The pixels, the traits and the animations are stored as bytes inside the smart contract, and every image is drawn from those bytes as an SVG whenever someone asks for it. No IPFS, no server, no company that has to stay in business.</p>
+      <p>Every mint draws a random User that hasn't been taken yet, so nobody knows in advance which face they'll get. And the whole collection is released under CC0: holders and non-holders alike are free to build with it, forever.</p>
+      <p class="emphasis">2,369 Users. Every one of them is someone you've met onchain. Maybe one of them is you.</p>
+    </article>
   </section>
 
   <section class="view" id="view-whitelist">
@@ -1519,6 +1771,7 @@
     document.getElementById("view-" + name).classList.add("active");
     document.querySelectorAll(".navlist button").forEach(b => b.classList.remove("active"));
     document.querySelector(`.navlist button[data-view="${name}"]`).classList.add("active");
+    if (name === "art") loadArtTypeExamples();
     if (name === "gallery" && GALLERY_ENABLED && !galleryLoadStarted) {
       galleryLoadStarted = true;
       loadGallery();
@@ -2426,12 +2679,9 @@
       galleryRevealed = revealed;
       galleryCanvas = { width, height };
 
-      const supplyEl = document.getElementById("statSupply");
-      const mintedEl = document.getElementById("statMinted");
-      const priceEl = document.getElementById("statMintPrice");
-      if (supplyEl) supplyEl.textContent = galleryTotal.toLocaleString();
-      if (mintedEl) mintedEl.textContent = "TBD";
-      if (priceEl) priceEl.textContent = "TBD";
+      // The Overview stats (supply 2,369, mint price 0.0015 ETH) are set in the
+      // HTML. This preview contract is the old Sepolia test pool, so it must
+      // not overwrite them.
 
       galleryLayerNames = [];
       for (let l = 0; l < layerCount; l++) {
@@ -3149,8 +3399,16 @@
   loadWhitelistStats();
 
   // ---------- Overview page: live random showcase, flipping in new pieces ----------
+  // Pieces come from the FINAL contracts' test deploy on Sepolia (50 public
+  // test mints), read live with tokenSVG — the exact image the token returns,
+  // animations included. No rarity badges: rarity across 50 test tokens says
+  // nothing about the real collection.
   const SHOWCASE_SIZE = 8;
   const FLIP_INTERVAL_MS = 1800;
+  const SHOWCASE_CONTRACT = "0x3ae7c689490a0b2bf54d8e60c29e5ce569efb672";
+  const SHOWCASE_EXPLORER = "https://eth-sepolia.blockscout.com/token/" + SHOWCASE_CONTRACT + "/instance/";
+  let showcaseContract = null;
+  let showcaseTotal = 0;
   let showcaseIds = [];
   let showcaseFlipTimer = null;
 
@@ -3167,21 +3425,35 @@
     return picked;
   }
 
+  async function ensureShowcaseContract() {
+    if (showcaseContract) return;
+    const p = await getWorkingProvider();
+    const c = new ethers.Contract(SHOWCASE_CONTRACT, [
+      "function tokenSVG(uint256 tokenId) view returns (string)",
+      "function totalSupply() view returns (uint256)"
+    ], p);
+    showcaseTotal = Number(await c.totalSupply());
+    showcaseContract = c;
+  }
+
+  // Token ids start at 1.
+  const pickShowcaseIds = (count, exclude) =>
+    pickUniqueRandomIds(count, showcaseTotal, (exclude || []).map(id => id - 1)).map(i => i + 1);
+
   async function fetchOverviewPiece(id) {
-    const svg = await contract.tokenImageSvg(id);
+    const svg = await showcaseContract.tokenSVG(id);
     const image = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svg)));
     return { id, image };
   }
 
-  function applyRarityBadge(card, id) {
-    const existing = card.querySelector(".rarity-badge");
-    if (existing) existing.remove();
-    const rarityTier = fullRarityById[id];
-    if (!rarityTier) return;
-    const badge = document.createElement("span");
-    badge.className = "rarity-badge rarity-" + rarityTier.toLowerCase().replace(/\s+/g, "-");
-    badge.textContent = rarityTier;
-    card.appendChild(badge);
+  function fillShowcaseCard(card, piece) {
+    card.dataset.tokenId = piece.id;
+    const link = card.querySelector("a");
+    link.href = SHOWCASE_EXPLORER + piece.id;
+    link.title = `User #${piece.id} — view onchain (Sepolia testnet)`;
+    const img = card.querySelector("img");
+    img.src = piece.image;
+    img.alt = `User #${piece.id}`;
   }
 
   async function loadOverviewArt() {
@@ -3197,15 +3469,8 @@
     }
 
     try {
-      await ensureGalleryInfo();
-
-      if (galleryRevealed === false) {
-        if (subEl) subEl.textContent = "The collection hasn't been revealed onchain yet — real art previews will appear here once it has.";
-        gridEl.innerHTML = "";
-        return;
-      }
-
-      showcaseIds = pickUniqueRandomIds(SHOWCASE_SIZE, galleryTotal, []);
+      await ensureShowcaseContract();
+      showcaseIds = pickShowcaseIds(SHOWCASE_SIZE, []);
       if (showcaseIds.length === 0) {
         gridEl.innerHTML = "";
         return;
@@ -3218,24 +3483,16 @@
         if (!piece) return;
         const card = document.createElement("div");
         card.className = "preview-card";
-        card.dataset.tokenId = piece.id;
-        card.innerHTML = `<img src="${piece.image}" alt="User #${piece.id}" loading="lazy">`;
+        card.innerHTML = `<a target="_blank" rel="noopener"><img alt="" loading="lazy"></a>`;
+        fillShowcaseCard(card, piece);
         gridEl.appendChild(card);
-      });
-
-      // Rarity badges fill in once the background full-collection trait
-      // pass (shared with the Gallery tab) completes.
-      ensureFullTraitData().then(() => {
-        gridEl.querySelectorAll(".preview-card").forEach(card => {
-          applyRarityBadge(card, Number(card.dataset.tokenId));
-        });
       });
 
       startShowcaseRotation();
 
     } catch (err) {
       console.error("Overview art preview failed:", err);
-      if (subEl) subEl.textContent = "Couldn't load live art previews right now — the Gallery tab still works normally.";
+      if (subEl) subEl.textContent = "Couldn't load the live art right now — please try again in a moment.";
       gridEl.innerHTML = "";
     }
   }
@@ -3247,7 +3504,7 @@
       // Only do work while Overview is actually the visible tab
       const overviewEl = document.getElementById("view-overview");
       if (!overviewEl || !overviewEl.classList.contains("active")) return;
-      if (!contract || showcaseIds.length === 0) return;
+      if (!showcaseContract || showcaseIds.length === 0) return;
 
       const gridEl = document.getElementById("previewGrid");
       const cards = gridEl.querySelectorAll(".preview-card");
@@ -3258,7 +3515,7 @@
       const img = card.querySelector("img");
       if (!img) return;
 
-      const [newId] = pickUniqueRandomIds(1, galleryTotal, showcaseIds);
+      const [newId] = pickShowcaseIds(1, showcaseIds);
       if (newId === undefined) return;
 
       try {
@@ -3266,11 +3523,8 @@
         const piece = await fetchOverviewPiece(newId);
 
         setTimeout(() => {
-          img.src = piece.image;
-          img.alt = `User #${piece.id}`;
+          fillShowcaseCard(card, piece);
           showcaseIds[slot] = piece.id;
-          card.dataset.tokenId = piece.id;
-          applyRarityBadge(card, piece.id);
           img.classList.remove("flipping");
         }, 350);
       } catch (e) {
@@ -3281,6 +3535,25 @@
   }
 
   loadOverviewArt();
+
+  // 05 · The Art: Type examples, read live from the Sepolia test tokens on first visit.
+  let artTypesLoaded = false;
+  async function loadArtTypeExamples() {
+    if (artTypesLoaded) return;
+    artTypesLoaded = true;
+    try {
+      await ensureShowcaseContract();
+      document.querySelectorAll("#view-art img[data-token]").forEach(async (img) => {
+        try {
+          const svg = await showcaseContract.tokenSVG(Number(img.dataset.token));
+          img.src = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svg)));
+        } catch (e) { console.error("Type example failed:", e); }
+      });
+    } catch (e) {
+      artTypesLoaded = false;
+      console.error("Type examples failed:", e);
+    }
+  }
 
   // ---------- Mobile filter panel toggle ----------
   document.getElementById("mobileFilterToggle").addEventListener("click", () => {
