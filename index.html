@@ -538,6 +538,7 @@
   .type-list{ display:flex; flex-direction:column; gap:10px; margin:10px 0 8px; }
   .type-row{ display:grid; grid-template-columns:72px 1fr auto; gap:16px; align-items:center; background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:10px 14px 10px 10px; }
   .type-row img{ width:72px; height:72px; border-radius:8px; border:1px solid var(--border); background:var(--panel2); image-rendering:pixelated; }
+  .type-row .type-soon{ width:72px; height:72px; border-radius:8px; border:1px dashed var(--border); background:var(--panel2); display:flex; align-items:center; justify-content:center; font-family:var(--font-head); font-size:26px; color:var(--muted); }
   .type-name{ font-family:var(--font-head); font-weight:700; font-size:16px; color:var(--text); }
   .type-note{ font-size:13px; line-height:1.6; color:var(--muted); margin-top:3px; }
   .type-count{ text-align:right; font-family:var(--font-ui); display:flex; flex-direction:column; gap:2px; }
@@ -560,7 +561,7 @@
   @media (max-width: 760px){
     .art-page{ padding-left:20px; padding-right:20px; }
     .type-row{ grid-template-columns:56px 1fr auto; gap:12px; }
-    .type-row img{ width:56px; height:56px; }
+    .type-row img, .type-row .type-soon{ width:56px; height:56px; }
     .palette-grid{ grid-template-columns:repeat(auto-fill, minmax(70px, 1fr)); }
   }
 
@@ -1495,7 +1496,7 @@
       <p>A face says more than a trait list ever could. Put the same User in a different mood and it becomes a different person, which is why no two of the 2,369 Users feel the same.</p>
 
       <h2 class="pixel">The Types</h2>
-      <p>Underneath the expressions, every User is one of eight Types. Most are Human, and the rest get rarer from there. Five Types are animated by their own nature: a Glitch glitches, a Bot scans, a Zombie shambles, a Skull rattles and an Alien glows.</p>
+      <p>Underneath the expressions, every User is one of ten Types. Most are Human, and the rest get rarer from there. Six Types are animated by their own nature: a Glitch glitches, a Bot scans, a Zombie shambles, a Skull rattles, a Glitch Ghost flickers and an Alien glows.</p>
       <div class="type-list">
           <div class="type-row">
             <img data-token="5" alt="Human example (Sepolia test token #5)">
@@ -1503,7 +1504,7 @@
               <div class="type-name">Human</div>
               <div class="type-note">Four skin tones: Mocha, Vanilla, Caramel and Cinnamon.</div>
             </div>
-            <div class="type-count"><b>1,705</b><span>72.0%</span><em>Still</em></div>
+            <div class="type-count"><b>1,605</b><span>67.8%</span><em>Still</em></div>
           </div>
           <div class="type-row">
             <img data-token="2" alt="Glitch example (Sepolia test token #2)">
@@ -1538,6 +1539,22 @@
             <div class="type-count"><b>112</b><span>4.7%</span><em>Scans</em></div>
           </div>
           <div class="type-row">
+            <div class="type-soon" role="img" aria-label="Android example coming soon">?</div>
+            <div class="type-info">
+              <div class="type-name">Android</div>
+              <div class="type-note">Built, not born. Circuits glow under the skin.</div>
+            </div>
+            <div class="type-count"><b>60</b><span>2.5%</span><em>Still</em></div>
+          </div>
+          <div class="type-row">
+            <div class="type-soon" role="img" aria-label="Glitch Ghost example coming soon">?</div>
+            <div class="type-info">
+              <div class="type-name">Glitch Ghost</div>
+              <div class="type-note">Half here, half signal. It fades out and tears sideways; the background never moves.</div>
+            </div>
+            <div class="type-count"><b>40</b><span>1.7%</span><em>Flickers</em></div>
+          </div>
+          <div class="type-row">
             <img data-token="9" alt="Skull example (Sepolia test token #9)">
             <div class="type-info">
               <div class="type-name">Skull</div>
@@ -1562,15 +1579,15 @@
             <div class="type-count"><b>9</b><span>0.4%</span><em>Glows</em></div>
           </div>
       </div>
-      <p class="art-caption">Examples are live test tokens from the final contract on Sepolia. On mainnet, every mint draws a random User.</p>
+      <p class="art-caption">Examples are live test tokens from the final contract on Sepolia; Android and Glitch Ghost examples arrive with the next test deploy. On mainnet, every mint draws a random User.</p>
 
       <h2 class="pixel">The Traits</h2>
-      <p>Every User is built from layers stacked on top of each other, from the background up to the accessory in their hand. Across the collection there are <b>228 drawn traits</b>, plus a Gender trait and an Attribute Count in the metadata.</p>
+      <p>Every User is built from layers stacked on top of each other, from the background up to the accessory in their hand. Across the collection there are <b>230 drawn traits</b>, plus a Gender trait and an Attribute Count in the metadata.</p>
       <table class="layer-table">
         <thead><tr><th>Layer</th><th>Traits</th><th>Notes</th></tr></thead>
         <tbody>
           <tr><td>Background</td><td>20</td><td>8 solid colors and 12 scenes, 5 of them animated</td></tr>
-          <tr><td>Type</td><td>11</td><td>8 kinds of User, Humans in 4 skin tones</td></tr>
+          <tr><td>Type</td><td>13</td><td>10 kinds of User, Humans in 4 skin tones</td></tr>
           <tr><td>Head</td><td>63</td><td>Hair, hats, hoods and helmets</td></tr>
           <tr><td>Body</td><td>61</td><td>From hoodies to tuxedos</td></tr>
           <tr><td>Face</td><td>50</td><td>The expressions: the heart of the collection</td></tr>
@@ -1592,7 +1609,7 @@
       <div class="chips"><span>Diamond Hands</span><span>Seed Phrase Note</span><span>Hardware Wallet</span><span>Dropping Alpha</span><span>Phone - Green Candle</span><span>Miner Tool</span><span>Snapshot Tool</span><span>Popcorn</span></div>
 
       <h2 class="pixel">The Palette</h2>
-      <p>The entire collection is painted with just <b>69 colors</b>. Every skin tone, every hoodie, every laser and every sunset comes from this one palette, the same bytes the contract uses to draw each User.</p>
+      <p>The entire collection is painted with just <b>75 colors</b>. Every skin tone, every hoodie, every laser and every sunset comes from this one palette, the same bytes the contract uses to draw each User.</p>
       <div class="palette-grid">
           <div class="swatch" style="background:#000000;color:#f4f4f6"><span>#000000</span></div>
           <div class="swatch" style="background:#202020;color:#f4f4f6"><span>#202020</span></div>
@@ -1663,21 +1680,27 @@
           <div class="swatch" style="background:#a04080;color:#f4f4f6"><span>#A04080</span></div>
           <div class="swatch" style="background:#ff0040;color:#f4f4f6"><span>#FF0040</span></div>
           <div class="swatch" style="background:#c06080;color:#f4f4f6"><span>#C06080</span></div>
+          <div class="swatch" style="background:#5d5d5d;color:#f4f4f6"><span>#5D5D5D</span></div>
+          <div class="swatch" style="background:#858585;color:#0b0b10"><span>#858585</span></div>
+          <div class="swatch" style="background:#b4b4b4;color:#0b0b10"><span>#B4B4B4</span></div>
+          <div class="swatch" style="background:#99e65f;color:#0b0b10"><span>#99E65F</span></div>
+          <div class="swatch" style="background:#d3fc7e;color:#0b0b10"><span>#D3FC7E</span></div>
+          <div class="swatch" style="background:#0cf1ff;color:#0b0b10"><span>#0CF1FF</span></div>
       </div>
-      <p class="art-caption">All 69 colors in the collection, with their hex codes.</p>
+      <p class="art-caption">All 75 colors in the collection, with their hex codes.</p>
 
       <h2 class="pixel">Some of Them Move</h2>
-      <p><b>649 of the 2,369 Users are animated</b>, and every animation is pure CSS stored inside the SVG the contract returns. No video, no GIF, no server. Glitches tear and recover while their background holds still, Bots run a scan over their metal, Zombies shamble, Skulls rattle and Aliens glow. Five of the backgrounds move too: Digital Code rains, Mist drifts, Clouds pass, No Signal Screen flickers and Blue Screen blinks its cursor.</p>
+      <p><b>685 of the 2,369 Users are animated</b>, and every animation is pure CSS stored inside the SVG the contract returns. No video, no GIF, no server. Glitches tear and recover while their background holds still, Bots run a scan over their metal, Zombies shamble, Skulls rattle, Glitch Ghosts fade and tear sideways, and Aliens glow. Five of the backgrounds move too: Digital Code rains, Mist drifts, Clouds pass, No Signal Screen flickers and Blue Screen blinks its cursor.</p>
 
       <h2 class="pixel">By the Numbers</h2>
       <div class="art-stats">
         <div><b>2,369</b><span>Users</span></div>
         <div><b>33×33</b><span>Pixel canvas</span></div>
-        <div><b>69</b><span>Colors</span></div>
-        <div><b>228</b><span>Drawn traits</span></div>
+        <div><b>75</b><span>Colors</span></div>
+        <div><b>230</b><span>Drawn traits</span></div>
         <div><b>50</b><span>Faces</span></div>
-        <div><b>8</b><span>Types</span></div>
-        <div><b>649</b><span>Animated</span></div>
+        <div><b>10</b><span>Types</span></div>
+        <div><b>685</b><span>Animated</span></div>
         <div><b>100%</b><span>Onchain</span></div>
         <div><b>CC0</b><span>License</span></div>
       </div>
@@ -1735,7 +1758,7 @@
       </details>
       <details class="faq-item">
         <summary>Why do some Users move?</summary>
-        <div class="faq-a"><p>649 of the 2,369 Users are animated, and the animation is part of the onchain image itself. Glitches tear and recover, Bots run a scan, Zombies shamble, Skulls rattle, Aliens glow, and five of the backgrounds move.</p></div>
+        <div class="faq-a"><p>685 of the 2,369 Users are animated, and the animation is part of the onchain image itself. Glitches tear and recover, Bots run a scan, Zombies shamble, Skulls rattle, Glitch Ghosts flicker, Aliens glow, and five of the backgrounds move.</p></div>
       </details>
     </div>
   </section>
