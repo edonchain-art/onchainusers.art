@@ -1316,6 +1316,8 @@
     .navlist button{ white-space:nowrap; padding:8px 10px; flex:none; }
     .sitenav{ overflow-x:hidden; }
   }
+  /* long ENS names wrap instead of overflowing */
+  #walletName, #wlWalletDisplay{ overflow-wrap:anywhere; }
 </style>
 </head>
 <body>
@@ -3452,6 +3454,17 @@
     if (wlConnectBtn) { wlConnectBtn.style.display = "none"; }
     const wlDisconnectBtn = document.getElementById("wlDisconnectBtn");
     if (wlDisconnectBtn) wlDisconnectBtn.style.display = "block";
+
+    // Show the wallet's ENS name instead of the address when it has one (ethers checks it resolves back).
+    const ensFor = connectedAddress;
+    getWorkingMainnetProvider()
+      .then((p) => p.lookupAddress(ensFor))
+      .then((ens) => {
+        if (!ens || connectedAddress !== ensFor) return;
+        if (walletNameEl) { walletNameEl.textContent = ens + " ✓"; walletNameEl.title = ensFor + " · verified by signature"; }
+        if (wlWalletDisplay) { wlWalletDisplay.textContent = "Verified: " + ens + " ✓"; wlWalletDisplay.title = ensFor; }
+      })
+      .catch(() => {});
 
     updateJoinButtonState();
   }
